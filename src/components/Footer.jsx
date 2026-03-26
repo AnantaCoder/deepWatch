@@ -6,7 +6,7 @@ const LINK_IDS = { 'ANALYZE': 'section-analyze', 'HOW IT WORKS': 'section-howitw
 
 export default function Footer() {
   const scrollTo = (id) => {
-    if (!id) { window.open('https://github.com', '_blank'); return; }
+    if (!id) { window.open('https://github.com/anantacoder', '_blank'); return; }
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
   };
 
