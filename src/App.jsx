@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import UploadZone from './components/UploadZone';
@@ -8,6 +9,8 @@ import Datasets from './components/Datasets';
 import DockerServices from './components/DockerServices';
 import Footer from './components/Footer';
 import ScanningOverlay from './components/ScanningOverlay';
+import AwarenessPage from './pages/AwarenessPage';
+import awarenessArticles from './data/awarenessArticles';
 
 // Simulate different results each scan for demo variety
 function generateResults() {
@@ -23,7 +26,7 @@ function generateResults() {
   };
 }
 
-export default function App() {
+function HomePage() {
   const [scanStatus, setScanStatus] = useState('idle'); // 'idle' | 'scanning' | 'complete'
   const [results, setResults] = useState(null);
 
@@ -36,7 +39,6 @@ export default function App() {
     const r = generateResults();
     setResults(r);
     setScanStatus('complete');
-    // Scroll to results
     setTimeout(() => {
       document.getElementById('section-results')?.scrollIntoView({ behavior: 'smooth' });
     }, 100);
@@ -60,8 +62,6 @@ export default function App() {
       {scanStatus === 'scanning' && (
         <ScanningOverlay onComplete={handleScanComplete} />
       )}
-
-      <Navbar />
 
       <main>
         {/* Section 2 — Hero */}
@@ -88,5 +88,21 @@ export default function App() {
       {/* Section 8 — Footer */}
       <Footer />
     </div>
+  );
+}
+
+export default function App() {
+  const articleCount = awarenessArticles.length;
+
+  return (
+    <BrowserRouter>
+      <div style={{ fontFamily: 'Space Grotesk, sans-serif' }}>
+        <Navbar articleCount={articleCount} />
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/awareness" element={<AwarenessPage />} />
+        </Routes>
+      </div>
+    </BrowserRouter>
   );
 }

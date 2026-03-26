@@ -61,3 +61,32 @@ body {
 
 /* Selection */
 ::selection { background: #FF6B6B; color: #fff; }
+
+/* Awareness page ticker */
+@keyframes ticker {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.ticker-track {
+  display: flex;
+  white-space: nowrap;
+  animation: ticker 35s linear infinite;
+}
+
+.ticker-track:hover {
+  animation-play-state: paused;
+}
+
+/* Hide scrollbar on horizontal scroll containers */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .ticker-track,
+  .animate-bounce,
+  .animate-pulse,
+  .animate-spin-slow {
+    animation: none;
+  }
+}

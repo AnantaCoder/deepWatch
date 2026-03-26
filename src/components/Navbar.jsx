@@ -1,24 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, Star } from 'lucide-react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
-const navLinks = ['ANALYZE', 'HOW IT WORKS', 'DATASETS', 'DOCS'];
-const linkMap = {
+const NAV_LINKS = ['ANALYZE', 'HOW IT WORKS', 'DATASETS', 'DOCS'];
+const LINK_MAP = {
   'ANALYZE': 'section-analyze',
   'HOW IT WORKS': 'section-howitworks',
   'DATASETS': 'section-datasets',
   'DOCS': 'section-docker',
 };
 
-export default function Navbar() {
+export default function Navbar({ articleCount = 9 }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [hoveredLink, setHoveredLink] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const isAwarenessPage = location.pathname === '/awareness';
 
   useEffect(() => {
     const checkMobile = () => {
       const mobile = window.innerWidth < 768;
       setIsMobile(mobile);
-      // Close menu if resizing to desktop
       if (!mobile) setMobileOpen(false);
     };
     checkMobile();
@@ -26,8 +30,21 @@ export default function Navbar() {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
+  // Close mobile menu on route change
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [location.pathname]);
+
   const scrollTo = (id) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+    if (isAwarenessPage) {
+      // Navigate home first, then scroll
+      navigate('/');
+      setTimeout(() => {
+        document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+      }, 300);
+    } else {
+      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+    }
     setMobileOpen(false);
   };
 
@@ -52,7 +69,8 @@ export default function Navbar() {
           height: isMobile ? '4rem' : '5rem',
         }}>
           {/* Logo */}
-          <div
+          <Link
+            to="/"
             style={{
               border: '4px solid #000',
               background: '#FFD93D',
@@ -66,19 +84,21 @@ export default function Navbar() {
               fontFamily: 'Space Grotesk, sans-serif',
               userSelect: 'none',
               flexShrink: 0,
+              textDecoration: 'none',
+              color: '#000',
+              display: 'inline-block',
             }}
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
           >
             DEEP//WATCH
-          </div>
+          </Link>
 
           {/* Desktop nav links */}
           {!isMobile && (
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              {navLinks.map((link) => (
+              {NAV_LINKS.map((link) => (
                 <button
                   key={link}
-                  onClick={() => scrollTo(linkMap[link])}
+                  onClick={() => scrollTo(LINK_MAP[link])}
                   onMouseEnter={() => setHoveredLink(link)}
                   onMouseLeave={() => setHoveredLink(null)}
                   style={{
@@ -100,6 +120,58 @@ export default function Navbar() {
                   {link}
                 </button>
               ))}
+
+              {/* AWARENESS link with badge */}
+              <Link
+                to="/awareness"
+                onMouseEnter={() => setHoveredLink('AWARENESS')}
+                onMouseLeave={() => setHoveredLink(null)}
+                style={{
+                  position: 'relative',
+                  fontWeight: 900,
+                  fontSize: '0.8rem',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.1em',
+                  border: isAwarenessPage || hoveredLink === 'AWARENESS' ? '4px solid #000' : '4px solid transparent',
+                  padding: '0.5rem 0.75rem',
+                  background: isAwarenessPage ? '#FF6B6B' : hoveredLink === 'AWARENESS' ? '#FF6B6B' : 'transparent',
+                  color: isAwarenessPage || hoveredLink === 'AWARENESS' ? '#fff' : '#000',
+                  boxShadow: isAwarenessPage || hoveredLink === 'AWARENESS' ? '4px 4px 0px 0px #000' : 'none',
+                  cursor: 'pointer',
+                  fontFamily: 'Space Grotesk, sans-serif',
+                  transition: 'all 100ms ease-linear',
+                  textDecoration: 'none',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                }}
+              >
+                AWARENESS
+                {/* Notification badge */}
+                <span
+                  style={{
+                    position: 'absolute',
+                    top: '-8px',
+                    right: '-8px',
+                    background: '#FF6B6B',
+                    color: '#fff',
+                    border: '2px solid #000',
+                    borderRadius: '9999px',
+                    width: '20px',
+                    height: '20px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontWeight: 900,
+                    fontSize: '10px',
+                    boxShadow: '2px 2px 0px #000',
+                    animation: 'bounce 1s ease-in-out infinite',
+                    fontFamily: 'Space Grotesk, sans-serif',
+                    flexShrink: 0,
+                  }}
+                >
+                  {articleCount}
+                </span>
+              </Link>
             </div>
           )}
 
@@ -164,7 +236,7 @@ export default function Navbar() {
       {isMobile && mobileOpen && (
         <div style={{
           position: 'fixed',
-          top: '4rem', // sits right below the navbar
+          top: '4rem',
           left: 0,
           right: 0,
           bottom: 0,
@@ -177,10 +249,10 @@ export default function Navbar() {
           gap: '0.75rem',
           overflowY: 'auto',
         }}>
-          {navLinks.map((link) => (
+          {NAV_LINKS.map((link) => (
             <button
               key={link}
-              onClick={() => scrollTo(linkMap[link])}
+              onClick={() => scrollTo(LINK_MAP[link])}
               style={{
                 fontWeight: 900,
                 fontSize: '1.4rem',
@@ -202,6 +274,50 @@ export default function Navbar() {
               {link}
             </button>
           ))}
+
+          {/* AWARENESS mobile link */}
+          <Link
+            to="/awareness"
+            style={{
+              fontWeight: 900,
+              fontSize: '1.4rem',
+              textTransform: 'uppercase',
+              border: '4px solid #000',
+              padding: '1rem 1.25rem',
+              background: '#FF6B6B',
+              color: '#fff',
+              boxShadow: '4px 4px 0px 0px #000',
+              textAlign: 'left',
+              cursor: 'pointer',
+              fontFamily: 'Space Grotesk, sans-serif',
+              borderRadius: 0,
+              width: '100%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              textDecoration: 'none',
+            }}
+          >
+            AWARENESS
+            <span
+              style={{
+                background: '#fff',
+                color: '#FF6B6B',
+                border: '2px solid #000',
+                borderRadius: '9999px',
+                width: '24px',
+                height: '24px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontWeight: 900,
+                fontSize: '11px',
+                boxShadow: '2px 2px 0px #000',
+              }}
+            >
+              {articleCount}
+            </span>
+          </Link>
 
           <button
             onClick={() => scrollTo('section-analyze')}
