@@ -11,6 +11,7 @@ import Footer from './components/Footer';
 import ScanningOverlay from './components/ScanningOverlay';
 import AwarenessPage from './pages/AwarenessPage';
 import awarenessArticles from './data/awarenessArticles';
+import CyberLaw from './components/CyberLaw/CyberLaw';
 
 // Simulate different results each scan for demo variety
 function generateResults() {
@@ -100,6 +101,7 @@ export default function App() {
         <Navbar articleCount={articleCount} />
         <Routes>
           <Route path="/" element={<HomePage />} />
+          <Route path="/cyber-law" element={<CyberLaw />} />
           <Route path="/awareness" element={<AwarenessPage />} />
         </Routes>
       </div>
