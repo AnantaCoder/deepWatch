@@ -78,12 +78,18 @@ export default function Hero({ onAnalyzeClick }) {
         padding: isMobile ? '2.5rem 1.25rem 3rem' : '4rem 1.5rem',
         display: 'grid',
         gridTemplateColumns: isMobile ? '1fr' : '3fr 2fr',
-        gap: isMobile ? '2rem' : '3rem',
+        gap: isMobile ? '2rem' : '8rem',
         alignItems: 'center',
         flex: 1,
       }}>
         {/* LEFT — 60% */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: isMobile ? '1.25rem' : '1.5rem', minWidth: 0 }}>
+<div style={{ 
+  display: 'flex', 
+  flexDirection: 'column', 
+  gap: isMobile ? '1.25rem' : '1.5rem', 
+  minWidth: 0,
+  paddingRight: isMobile ? '0' : '4rem' // <--- Add this line
+}}>
 
           {/* Bouncing badge */}
           <div>

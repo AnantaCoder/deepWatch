@@ -34,11 +34,12 @@ export default function AwarenessPage() {
         fontFamily: 'Space Grotesk, sans-serif',
       }}
     >
+      {/* Top Ticker */}
+      <NewsTickerBar variant="yellow" />
+
       {/* Section 1 — Hero */}
       <AwarenessHero onReadLatest={handleReadLatest} />
 
-      {/* Top Ticker */}
-      <NewsTickerBar variant="yellow" />
 
       {/* Section 2 — Category Filter */}
       <CategoryFilter
