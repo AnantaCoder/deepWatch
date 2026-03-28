@@ -121,6 +121,33 @@ export default function Navbar({ articleCount = 9 }) {
                 </button>
               ))}
 
+             {/* CYBAR LAW link with badge */}
+              <Link
+                to="/cyber-law"
+                onMouseEnter={() => setHoveredLink('CYBER-LAW')}
+                onMouseLeave={() => setHoveredLink(null)}
+                style={{
+                  position: 'relative',
+                  fontWeight: 900,
+                  fontSize: '0.8rem',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.1em',
+                  border: isAwarenessPage || hoveredLink === 'CYBER-LAW' ? '4px solid #000' : '4px solid transparent',
+                  padding: '0.5rem 0.75rem',
+                  background: isAwarenessPage ? '#FF6B6B' : hoveredLink === 'CYBER-LAW' ? '#FF6B6B' : 'transparent',
+                  color: isAwarenessPage || hoveredLink === 'CYBER-LAW' ? '#fff' : '#000',
+                  boxShadow: isAwarenessPage || hoveredLink === 'CYBER-LAW' ? '4px 4px 0px 0px #000' : 'none',
+                  cursor: 'pointer',
+                  fontFamily: 'Space Grotesk, sans-serif',
+                  transition: 'all 100ms ease-linear',
+                  textDecoration: 'none',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                }}
+              >
+                CYBER LAW
+              </Link>
+
               {/* AWARENESS link with badge */}
               <Link
                 to="/awareness"
@@ -317,6 +344,32 @@ export default function Navbar({ articleCount = 9 }) {
             >
               {articleCount}
             </span>
+          </Link>
+
+           {/* CYBER LAW mobile link */}
+          <Link
+            to="/cyber-law"
+            style={{
+              fontWeight: 900,
+              fontSize: '1.4rem',
+              textTransform: 'uppercase',
+              border: '4px solid #000',
+              padding: '1rem 1.25rem',
+              background: '#FF6B6B',
+              color: '#fff',
+              boxShadow: '4px 4px 0px 0px #000',
+              textAlign: 'left',
+              cursor: 'pointer',
+              fontFamily: 'Space Grotesk, sans-serif',
+              borderRadius: 0,
+              width: '100%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              textDecoration: 'none',
+            }}
+          >
+            CYBER LAW
           </Link>
 
           <button
