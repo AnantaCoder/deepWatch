@@ -70,7 +70,8 @@ function ScoreCard({ card, scores }) {
 }
 
 export default function ScanResults({ results, onScanAgain }) {
-  const isDeepfake = results.verdict === 'DEEPFAKE';
+ const fakeScore = results.fakeScore || 0;
+ const isDeepfake = fakeScore > 40; // ✅ your logic
 
   return (
     <section
@@ -111,7 +112,7 @@ export default function ScanResults({ results, onScanAgain }) {
             {isDeepfake ? '⚠ DEEPFAKE DETECTED' : '✓ CONTENT APPEARS REAL'}
           </div>
           <div style={{ fontSize: '1.4rem', fontWeight: 700, marginTop: '0.75rem' }}>
-            CONFIDENCE: {isDeepfake ? '94.7%' : '87.3%'}
+            CONFIDENCE: {isDeepfake ? fakeScore : '87.3%'}
           </div>
         </div>
 
