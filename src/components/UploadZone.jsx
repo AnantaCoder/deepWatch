@@ -47,11 +47,12 @@ const handleScan = async () => {
 
     console.log(res.data);
     
-     // ✅ Only send FAKE score
     const fakeScore = res.data.all_scores.fake;
+    const realScore = res.data.all_scores.real;
 
     onScan({
-      fakeScore: fakeScore
+      fakeScore,
+      realScore
     });
 
   } catch (err) {

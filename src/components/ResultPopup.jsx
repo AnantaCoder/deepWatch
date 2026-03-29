@@ -28,9 +28,11 @@ export default function ResultPopup({ isOpen, onClose, result }) {
         </div>
 
         <div style={styles.resultBox}>
-          <p style={styles.label}>Fake Score:</p>
+          <p style={styles.label}>{isFake ? "Fake Score:" : "Real Score:"}</p>
           <p style={styles.value}>
-            {(result?.fakeScore ).toFixed(2)}%
+            {isFake 
+              ? (result?.fakeScore)?.toFixed(2)
+              : (result?.realScore)?.toFixed(2)}%
           </p>
         </div>
 
