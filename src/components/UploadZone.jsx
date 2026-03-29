@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { Upload } from 'lucide-react';
 import ModalityCard, { CARDS } from './ModalityCard';
+import axios from "axios";
 
 export default function UploadZone({ onScan }) {
   const [isDragging, setIsDragging] = useState(false);
@@ -19,13 +20,45 @@ export default function UploadZone({ onScan }) {
   const handleFileChange = (e) => {
     if (e.target.files[0]) setUploadedFile(e.target.files[0]);
   };
-  const handleScan = () => {
-    if (!uploadedFile && !pastedText.trim()) {
-      alert('Please upload a file or paste text to analyze.');
-      return;
-    }
-    onScan({ file: uploadedFile, text: pastedText });
-  };
+
+const handleScan = async () => {
+  if (!uploadedFile) {
+    alert("Please upload a file to analyze.");
+    return;
+  }
+
+  try {
+    const formData = new FormData();
+    formData.append("file", uploadedFile);
+
+    // const res = await axios.get(
+    //   "http://localhost:3000",
+      
+    // );
+    const res = await axios.post(
+      "http://localhost:3000/ai/detect",
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+
+    console.log(res.data);
+    
+     // ✅ Only send FAKE score
+    const fakeScore = res.data.all_scores.fake;
+
+    onScan({
+      fakeScore: fakeScore
+    });
+
+  } catch (err) {
+    console.error(err);
+    //alert("Error analyzing file");
+  }
+};
 
   return (
     <section

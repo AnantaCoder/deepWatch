@@ -12,6 +12,7 @@ import ScanningOverlay from './components/ScanningOverlay';
 import AwarenessPage from './pages/AwarenessPage';
 import awarenessArticles from './data/awarenessArticles';
 import CyberLaw from './components/CyberLaw/CyberLaw';
+import ResultPopup from './components/ResultPopup';
 
 // Simulate different results each scan for demo variety
 function generateResults() {
@@ -30,20 +31,36 @@ function generateResults() {
 function HomePage() {
   const [scanStatus, setScanStatus] = useState('idle'); // 'idle' | 'scanning' | 'complete'
   const [results, setResults] = useState(null);
+  const [showPopup, setShowPopup] = useState(false);
 
-  const handleScan = useCallback(() => {
-    setScanStatus('scanning');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, []);
+  
+  // const handleScan = useCallback(() => {
+  //   setScanStatus('scanning');
+  //   window.scrollTo({ top: 0, behavior: 'smooth' });
+  // }, []);
 
-  const handleScanComplete = useCallback(() => {
-    const r = generateResults();
-    setResults(r);
-    setScanStatus('complete');
-    setTimeout(() => {
-      document.getElementById('section-results')?.scrollIntoView({ behavior: 'smooth' });
-    }, 100);
-  }, []);
+
+  const handleScan = useCallback((data) => {
+  setScanStatus('scanning');
+  setResults(data);   // store backend result
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}, []);
+
+
+  // const handleScanComplete = useCallback(() => {
+  //   const r = generateResults();
+  //   setResults(r);
+  //   setScanStatus('complete');
+  //   setTimeout(() => {
+  //     document.getElementById('section-results')?.scrollIntoView({ behavior: 'smooth' });
+  //   }, 100);
+  // }, []);
+
+
+ const handleScanComplete = useCallback(() => {
+  setScanStatus('complete');
+  setShowPopup(true);   // open popup
+}, []);
 
   const handleScanAgain = useCallback(() => {
     setScanStatus('idle');
@@ -72,9 +89,9 @@ function HomePage() {
         <UploadZone onScan={handleScan} />
 
         {/* Section 4 — Results (shown after scan) */}
-        {scanStatus === 'complete' && results && (
+        {/* {scanStatus === 'complete' && results && (
           <ScanResults results={results} onScanAgain={handleScanAgain} />
-        )}
+        )} */}
 
         {/* Section 5 — How It Works */}
         <HowItWorks />
@@ -88,6 +105,14 @@ function HomePage() {
 
       {/* Section 8 — Footer */}
       <Footer />
+      <ResultPopup
+  isOpen={showPopup}
+  result={results}
+  onClose={() => {
+    setShowPopup(false);
+    setScanStatus('idle');
+  }}
+/>
     </div>
   );
 }
