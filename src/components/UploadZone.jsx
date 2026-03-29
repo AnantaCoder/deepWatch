@@ -2,12 +2,14 @@ import React, { useState, useRef } from 'react';
 import { Upload } from 'lucide-react';
 import ModalityCard, { CARDS } from './ModalityCard';
 import axios from "axios";
+import ErrorPopup from './ErrorPopup';
 
 export default function UploadZone({ onScan }) {
   const [isDragging, setIsDragging] = useState(false);
   const [uploadedFile, setUploadedFile] = useState(null);
   const [pastedText, setPastedText] = useState('');
   const [textFocused, setTextFocused] = useState(false);
+  const [errorMsg, setErrorMsg] = useState(null);
   const fileInputRef = useRef(null);
 
   const handleDragOver = (e) => { e.preventDefault(); setIsDragging(true); };
@@ -23,7 +25,7 @@ export default function UploadZone({ onScan }) {
 
 const handleScan = async () => {
   if (!uploadedFile) {
-    alert("Please upload a file to analyze.");
+    setErrorMsg("Please upload a file to analyze.");
     return;
   }
 
@@ -57,13 +59,25 @@ const handleScan = async () => {
 
   } catch (err) {
     console.error(err);
-    //alert("Error analyzing file");
+    if (err.response) {
+      setErrorMsg(`Server Error: ${err.response.statusText}`);
+    } else if (err.request) {
+      setErrorMsg("Network Error: The AI model is currently offline or unreachable.");
+    } else {
+      setErrorMsg(err.message || "An unexpected error occurred.");
+    }
   }
 };
 
   return (
-    <section
-      id="section-analyze"
+    <>
+      <ErrorPopup 
+        isOpen={!!errorMsg} 
+        onClose={() => setErrorMsg(null)} 
+        errorMessage={errorMsg} 
+      />
+      <section
+        id="section-analyze"
       style={{
         background: '#FFFDF5',
         backgroundImage: 'radial-gradient(#000 1.5px, transparent 1.5px)',
@@ -230,9 +244,10 @@ const handleScan = async () => {
             <button
               id="scan-btn"
               onClick={handleScan}
+              disabled={!!errorMsg}
               style={{
-                background: '#FF6B6B',
-                color: '#fff',
+                background: !!errorMsg ? '#ddd' : '#FF6B6B',
+                color: !!errorMsg ? '#888' : '#fff',
                 border: '4px solid #000',
                 height: '4rem',
                 width: '100%',
@@ -240,14 +255,15 @@ const handleScan = async () => {
                 fontWeight: 900,
                 textTransform: 'uppercase',
                 letterSpacing: '0.08em',
-                boxShadow: '8px 8px 0px 0px #000',
-                cursor: 'pointer',
+                boxShadow: !!errorMsg ? 'none' : '8px 8px 0px 0px #000',
+                cursor: !!errorMsg ? 'not-allowed' : 'pointer',
                 fontFamily: 'Space Grotesk, sans-serif',
                 borderRadius: 0,
                 transition: 'transform 100ms ease-linear, box-shadow 100ms ease-linear',
+                transform: !!errorMsg ? 'translate(2px,2px)' : 'none',
               }}
-              onMouseDown={e => { e.currentTarget.style.transform = 'translate(2px,2px)'; e.currentTarget.style.boxShadow = 'none'; }}
-              onMouseUp={e => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = '8px 8px 0px 0px #000'; }}
+              onMouseDown={e => { if (!errorMsg) { e.currentTarget.style.transform = 'translate(2px,2px)'; e.currentTarget.style.boxShadow = 'none'; } }}
+              onMouseUp={e => { if (!errorMsg) { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = '8px 8px 0px 0px #000'; } }}
             >
               SCAN FOR DEEPFAKES →
             </button>
@@ -262,5 +278,6 @@ const handleScan = async () => {
         </div>
       </div>
     </section>
+    </>
   );
 }
