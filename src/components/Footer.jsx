@@ -30,11 +30,11 @@ export default function Footer() {
               padding: '0.6rem 1.25rem', fontWeight: 900, fontSize: '1.5rem',
               textTransform: 'uppercase', boxShadow: '8px 8px 0px 0px #000',
               transform: 'rotate(-1deg)', alignSelf: 'flex-start',
-            }}>DEEP//WATCH</div>
+            }}>SatyaNetra</div>
             <p style={{ fontWeight: 900, fontStyle: 'italic', fontSize: '1.4rem', margin: 0 }}>"No fake gets past us."</p>
-            <p style={{ fontWeight: 700, fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.1em', margin: 0 }}>
+            {/* <p style={{ fontWeight: 700, fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.1em', margin: 0 }}>
               Built for hackathon. Designed to win.
-            </p>
+            </p> */}
           </div>
 
           {/* Quick links */}
@@ -85,7 +85,7 @@ export default function Footer() {
           alignItems: 'center', gap: '1rem',
         }}>
           <span style={{ fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.15em', fontSize: '0.8rem' }}>
-            DEEP//WATCH © 2026
+            SatyaNetra © 2026
           </span>
           <span style={{ fontWeight: 700, fontStyle: 'italic', fontSize: '0.85rem' }}>
             Made with rage against synthetic media.

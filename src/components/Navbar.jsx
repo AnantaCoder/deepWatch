@@ -89,7 +89,7 @@ export default function Navbar({ articleCount = 9 }) {
               display: 'inline-block',
             }}
           >
-            DEEP//WATCH
+            SatyaNetra
           </Link>
 
           {/* Desktop nav links */}
