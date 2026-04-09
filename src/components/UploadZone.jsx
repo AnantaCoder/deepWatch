@@ -38,7 +38,7 @@ const handleScan = async () => {
       
     // );
     const res = await axios.post(
-      "http://localhost:3000/ai/detect",
+      "http://localhost:3000/detect/image",
       formData,
       {
         headers: {

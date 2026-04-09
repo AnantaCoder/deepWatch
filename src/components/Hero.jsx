@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 // Safe marquee with pure CSS animation instead of react-fast-marquee
 const MARQUEE_TEXT = "DEEPFAKE DETECTED ✦ SYNTHETIC VOICE IDENTIFIED ✦ AI TEXT FLAGGED ✦ VISUAL ARTIFACTS FOUND ✦ STAY VIGILANT ✦  ";
@@ -36,10 +37,12 @@ function MarqueeBanner() {
   );
 }
 
-export default function Hero({ onAnalyzeClick }) {
+export default function Hero( ) {
   const scanLineRef = useRef(null);
   const [linePos, setLinePos] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
@@ -163,7 +166,7 @@ export default function Hero({ onAnalyzeClick }) {
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', marginTop: '0.5rem' }}>
             <button
               id="hero-analyze-btn"
-              onClick={onAnalyzeClick}
+              onClick = {()=> navigate('/analyze')}
               style={{
                 background: '#FF6B6B',
                 color: '#fff',

@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Menu, X, Star } from 'lucide-react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
-const NAV_LINKS = ['ANALYZE', 'HOW IT WORKS', 'DATASETS', 'DOCS'];
+const NAV_LINKS = [ 'HOW IT WORKS', 'DATASETS', 'DOCS'];
 const LINK_MAP = {
-  'ANALYZE': 'section-analyze',
+  // 'ANALYZE': 'section-analyze',
   'HOW IT WORKS': 'section-howitworks',
   'DATASETS': 'section-datasets',
   'DOCS': 'section-docker',

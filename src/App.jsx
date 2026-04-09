@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import UploadZone from './components/UploadZone';
@@ -13,6 +13,7 @@ import AwarenessPage from './pages/AwarenessPage';
 import awarenessArticles from './data/awarenessArticles';
 import CyberLaw from './components/CyberLaw/CyberLaw';
 import ResultPopup from './components/ResultPopup';
+import Analyze from './components/Analyze/Analyze';
 
 // Simulate different results each scan for demo variety
 function generateResults() {
@@ -32,6 +33,8 @@ function HomePage() {
   const [scanStatus, setScanStatus] = useState('idle'); // 'idle' | 'scanning' | 'complete'
   const [results, setResults] = useState(null);
   const [showPopup, setShowPopup] = useState(false);
+
+  const navigate  = useNavigate();
 
   
   // const handleScan = useCallback(() => {
@@ -70,9 +73,9 @@ function HomePage() {
     }, 100);
   }, []);
 
-  const scrollToAnalyze = useCallback(() => {
-    document.getElementById('section-analyze')?.scrollIntoView({ behavior: 'smooth' });
-  }, []);
+  // const scrollToAnalyze = useCallback(() => {
+  //   navigate('/analyze')
+  // }, []);
 
   return (
     <div className="min-h-screen bg-[#FFFDF5]" style={{ fontFamily: 'Space Grotesk, sans-serif' }}>
@@ -83,7 +86,7 @@ function HomePage() {
 
       <main>
         {/* Section 2 — Hero */}
-        <Hero onAnalyzeClick={scrollToAnalyze} />
+        <Hero  />
 
         {/* Section 3 — Upload & Analyze */}
         <UploadZone onScan={handleScan} />
@@ -128,6 +131,7 @@ export default function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/cyber-law" element={<CyberLaw />} />
           <Route path="/awareness" element={<AwarenessPage />} />
+          <Route path="/analyze" element={<Analyze />} />
         </Routes>
       </div>
     </BrowserRouter>
